@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef } from 'react'
+import TopMenu from './components/topMenu/TopMenu'
+import NavigationMenu from './components/navigationMenu/NavigationMenu'
+import Orders from './components/orders/Orders'
+import Products from './components/products/Products'
+import { Provider } from 'react-redux'
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom'
+import store from './redux/store'
+import Modal from './assets/Modal'
 
-function App() {
+const App = () => {
+  const modalRef = useRef()
+
+  const togleModal = (str, order) => {
+    modalRef.current.togleModal(str, order)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-wrapper">
+      <Modal ref={modalRef}/>
+      <TopMenu/>
+      <NavigationMenu/>
+      <div className="app-wrapper-content">
+        <Switch>
+          <Route exact path='/' render={ () => <Redirect to={'/orders'}/> }/>
+          <Route path='/products' render={() => <Products />} />
+          <Route path='/orders' render={() => <Orders togleModal={togleModal} />} />
+          <Route path='*' render={ () => <div>404 NOT FOUND</div>} />
+        </Switch>
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+const AppContainer = () => {
+  return <BrowserRouter>
+    <Provider store={store}>
+      <App/>
+    </Provider>
+  </BrowserRouter>
+}
+
+export default AppContainer
