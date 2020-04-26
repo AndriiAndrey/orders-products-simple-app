@@ -3,10 +3,10 @@ import Clock from 'react-live-clock'
 import { subscribeToCount } from '../../api/api'
 
 const TopMenu = () => {
-  const [timestamp, setTimestamp] = useState('no timestamp yet')
+  const [clientsCout, setClientsCout] = useState('no clients yet')
 
   useEffect(() => {
-    subscribeToCount((_err, time) => setTimestamp(time))
+    subscribeToCount((_err, cont) => setClientsCout(cont))
   }, [])
 
   return (
@@ -20,7 +20,7 @@ const TopMenu = () => {
           <img className="clock-logo"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR78W1Sqj7Iyy3ftIjAT1QsPfRo3Nl_erbZCaymj56XsqBypNfX&usqp=CAU/>" alt="clock"/>
           <Clock format={'HH:mm'}/>
-          <p className="date-time-value-active-tab">Active tab: {timestamp}</p>
+          <p className="date-time-value-active-tab">Active tab: {clientsCout}</p>
         </div>
       </div>
     </header>
